@@ -16,6 +16,9 @@ class CreateEntrenadorsTable extends Migration
         Schema::create('entrenadores', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
+            $table->text('descripcion');
+            $table->string('avatar');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }
