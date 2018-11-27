@@ -10,15 +10,7 @@
 			@include('entrenador.formulario')
 		</form>
 
-		@if ($errors->any())
-		<div class="alert alert-danger mt-2">
-			<ul>
-				@foreach ($errors->all() as $error)
-				<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-		@endif
+	@include('common.errors')
 	</div>
 
 </div>
