@@ -10,6 +10,7 @@
 			@csrf
 			@include('entrenador.formulario')
 		</form>
+			@include('common.errors')
 	</div>
 </div>
 @endsection
