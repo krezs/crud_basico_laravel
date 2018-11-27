@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entrenador;
 use Illuminate\Http\Request;
+use App\Http\Requests\GuardarEntrenadorRequest;
 
 class EntrenadorController extends Controller
 {
@@ -34,8 +35,9 @@ class EntrenadorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GuardarEntrenadorRequest $request)
     {
+
         if ($request->hasFile('avatar')) {
             $archivo=$request->file('avatar');
             $nombre_archivo=time().'_'.$archivo->getClientOriginalName();
@@ -51,8 +53,8 @@ class EntrenadorController extends Controller
         $entrenador->slug=$slug;
         $entrenador->save();
 
-        return 'guardado';
-        
+        //return 'guardado';
+        return redirect()->route('entrenadores.index');
     }
 
     /**
@@ -99,7 +101,7 @@ class EntrenadorController extends Controller
         }
         $entrenador->slug=str_slug($request->input('nombre'), '-');
         $entrenador->save();
-        return 'Actualizo';
+        return redirect()->route('entrenadores.show',$entrenador->slug)->with('status','El entrenador se actualizo correctamente.');
     }
 
     /**
@@ -108,8 +110,12 @@ class EntrenadorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        //
+        $entrenador=Entrenador::where('slug','=',$slug)->firstOrFail();
+        $ruta_archivo=public_path().'/images/'.$entrenador->avatar;
+        \File::delete($ruta_archivo);
+        $entrenador->delete();
+        return redirect()->route('entrenadores.index');
     }
 }
